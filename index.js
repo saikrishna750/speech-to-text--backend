@@ -11,9 +11,9 @@ app.use(express.json())
 const path = require('path')
 
 app.use('/uploads', express.static(path.join(__dirname,'uploads')))
-
-app.listen(process.env.PORT, () => {
-    console.log("server is running at port: 3000")
+const PORT = process.env.PORT || 4000 
+app.listen(PORT, () => {
+    console.log(`server is running at port: ${PORT}`)
 })
 
 
@@ -104,4 +104,9 @@ app.delete("/delete/:id" , async (request, response) => {
     console.log(`data:${data}`)
     console.log(`error:${error}`)
     response.send("deleted successfully")
+})
+
+
+app.use('/', (req, res) =>{
+    res.send("<h1> backend is running")
 })
