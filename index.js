@@ -54,8 +54,6 @@ const transcribeFile = async (filePath) => {
 app.post('/upload', upload.single('audio'), async (request, response) => {
     const filePath = path.join(__dirname,request.file.path)
     const transcibe = await transcribeFile(filePath)
-    console.log(`api - text ${transcibe}`)
-
     const {data, error} = await supabase
     .from("audiotext")
     .insert([{
@@ -64,12 +62,8 @@ app.post('/upload', upload.single('audio'), async (request, response) => {
         transcription:transcibe
     }])
     if (error){
-        console.log(`supabase error at insertion: ${error.message}`)
+        console.log(`supabase error : ${error.message}`)
     }
-    else{
-        console.log(`inserted successfully post at supa ${data}`)
-    }
-    console.log(`Received ${filePath}`)
     response.send("file uploaded successfully")
 });
 
@@ -88,7 +82,6 @@ app.get("/history/" , async (request, response) => {
         console.log(`supabase error: ${error.message}`)
     }
     const transcriptionsList = data
-    // console.log(transcriptionsList)
     response.send(transcriptionsList)
 }) 
 
@@ -96,12 +89,10 @@ app.get("/history/" , async (request, response) => {
 //delete 
 app.delete("/delete/:id" , async (request, response) => {
     const {id} = request.params
-    console.log(id)
     const {data, error} = await supabase
     .from('audiotext')
     .delete()
     .eq('id',id)
-    console.log(`data:${data}`)
     console.log(`error:${error}`)
     response.send("deleted successfully")
 })
