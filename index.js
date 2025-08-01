@@ -36,7 +36,6 @@ const transcribeFile = async (filePath) => {
   const deepgram = createClient(process.env.DEEPGRAM_API_KEY);
   const { result, error } = await deepgram.listen.prerecorded.transcribeFile(
     fs.readFileSync(filePath),
-
     {
       model: "nova-3",
       smart_format: true,
